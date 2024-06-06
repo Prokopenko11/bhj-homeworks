@@ -4,10 +4,32 @@ class Game {
     this.wordElement = container.querySelector('.word');
     this.winsElement = container.querySelector('.status__wins');
     this.lossElement = container.querySelector('.status__loss');
+    this.secondsValue = container.querySelector('.time__status');
 
     this.reset();
 
     this.registerEvents();
+
+    this.setTimer();
+  }
+
+  setTimer() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+
+    let symbols = document.querySelectorAll('.symbol');
+    let counter = symbols.length;
+    this.secondsValue.textContent = counter;
+    this.intervalId = setInterval(() => {
+      counter--;
+      this.secondsValue.textContent = counter;
+
+      if (counter === 0) {
+        clearInterval(this.intervalId);
+        this.fail();
+      }
+    }, 1000)
   }
 
   reset() {
@@ -17,18 +39,18 @@ class Game {
   }
 
   registerEvents() {
-    /*
-      TODO:
-      Написать обработчик события, который откликается
-      на каждый введённый символ.
-      В случае правильного ввода символа вызываем this.success()
-      При неправильном вводе символа - this.fail();
-      DOM-элемент текущего символа находится в свойстве this.currentSymbol.
-     */
+    document.addEventListener('keydown', (e) => {
+      const inputLetter = e.key.toLowerCase();
+      if (inputLetter === this.currentSymbol.textContent) {
+        this.success();
+      } else {
+        this.fail();
+      }
+    });
   }
 
   success() {
-    if(this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
+    if (this.currentSymbol.classList.contains("symbol_current")) this.currentSymbol.classList.remove("symbol_current");
     this.currentSymbol.classList.add('symbol_correct');
     this.currentSymbol = this.currentSymbol.nextElementSibling;
 
@@ -42,6 +64,7 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    this.setTimer();
   }
 
   fail() {
@@ -50,6 +73,7 @@ class Game {
       this.reset();
     }
     this.setNewWord();
+    this.setTimer();
   }
 
   setNewWord() {
@@ -60,18 +84,18 @@ class Game {
 
   getWord() {
     const words = [
-        'bob',
-        'awesome',
-        'netology',
-        'hello',
-        'kitty',
-        'rock',
-        'youtube',
-        'popcorn',
-        'cinema',
-        'love',
-        'javascript'
-      ],
+      'bob',
+      'awesome',
+      'netology',
+      'hello',
+      'kitty',
+      'rock',
+      'youtube',
+      'popcorn',
+      'cinema',
+      'love',
+      'javascript'
+    ],
       index = Math.floor(Math.random() * words.length);
 
     return words[index];
@@ -81,7 +105,7 @@ class Game {
     const html = [...word]
       .map(
         (s, i) =>
-          `<span class="symbol ${i === 0 ? 'symbol_current': ''}">${s}</span>`
+          `<span class="symbol ${i === 0 ? 'symbol_current' : ''}">${s}</span>`
       )
       .join('');
     this.wordElement.innerHTML = html;
