@@ -10,7 +10,7 @@ function startRotator(rotatorElement) {
     } else {
       currentIndex = 0;
     }
-  
+
     rotatorCases[currentIndex].classList.add('rotator__case_active');
   }, 1000);
 }
