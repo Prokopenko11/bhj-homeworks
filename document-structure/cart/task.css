@@ -1,6 +1,15 @@
 body {
   font-family: Arial;
 }
+
+.cart {
+  display: none;
+}
+
+.cart__active {
+  display: block;
+}
+
 .cart__products {
   display: flex;
   justify-content: center;
@@ -88,4 +97,18 @@ body {
 
 .product-shadow {
   position: absolute;
+}
+
+.delete__product {
+  margin-right: 10px;
+  padding: 5px;
+  text-align: center;
+  background-color: green;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete__product:hover {
+  opacity: 0.8;
 }
